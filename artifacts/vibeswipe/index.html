@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>VibeSwipe Song Recommender</title>
+    <meta name="description" content="Find your next favorite track by sharing the songs you already love." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="VibeSwipe Song Recommender" />
+    <meta property="og:description" content="A deterministic, tag-based music discovery tool." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="VibeSwipe Song Recommender" />
+    <meta name="twitter:description" content="A deterministic, tag-based music discovery tool." />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main id="app" class="app-shell">
+      <header class="topbar">
+        <button class="wordmark" type="button" data-action="reset" aria-label="VibeSwipe home">
+          <span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>vibeswipe</span>
+        </button>
+        <div class="topbar-meta">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>local catalog / no playback</span>
+        </div>
+      </header>
+
+      <section id="home-view" class="view view-home" aria-labelledby="home-title">
+        <div class="home-copy">
+          <p class="eyebrow">Your next listen starts here</p>
+          <h1 id="home-title">Find the <em>feeling</em><br />behind a song.</h1>
+          <p class="lede">Name a track you know. We will match its tags, tempo, and energy to a short stack of songs worth your attention.</p>
+          <div class="method-note">
+            <span class="method-line" aria-hidden="true"></span>
+            <span>Transparent matching. Curated locally.</span>
+          </div>
+        </div>
+        <div class="search-panel">
+          <form id="search-form" class="search-form" autocomplete="off">
+            <label for="song-search">Start with a song</label>
+            <div class="search-field-wrap">
+              <span class="search-prefix" aria-hidden="true">01</span>
+              <input id="song-search" name="song" type="search" placeholder="Try “Dreams” or “Breezeblocks”" aria-describedby="search-help" aria-autocomplete="list" />
+              <button type="submit" class="search-submit" aria-label="Find matching song"><span aria-hidden="true">→</span></button>
+            </div>
+            <p id="search-help" class="search-help">Pick an exact match from the catalog to begin.</p>
+          </form>
+          <div id="search-results" class="search-results" role="listbox" aria-label="Song matches"></div>
+          <div class="catalog-hint">
+            <span class="mini-rule" aria-hidden="true"></span>
+            <span>12 recognizable tracks in this proof of concept</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="match-view" class="view match-view is-hidden" aria-labelledby="match-title">
+        <div class="section-topline">
+          <span class="eyebrow">Your anchor track</span>
+          <button class="text-button" type="button" data-action="back-home">Change song <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="match-layout">
+          <div class="match-intro">
+            <p class="step-count">01 / 02</p>
+            <h2 id="match-title">This is the<br /><em>starting point.</em></h2>
+            <p>We will use the details below as your listening fingerprint. No black box, just close neighbors in the catalog.</p>
+            <button id="begin-button" class="primary-button" type="button" data-action="begin">
+              <span>Build my stack</span><span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+          <article id="seed-card" class="seed-card"></article>
+        </div>
+        <div class="matching-footnote"><span class="match-symbol" aria-hidden="true"></span> Matches use shared genre, mood, tags, and nearby BPM.</div>
+      </section>
+
+      <section id="deck-view" class="view deck-view is-hidden" aria-labelledby="deck-title">
+        <div class="section-topline deck-topline">
+          <div>
+            <span class="eyebrow">Your discovery stack</span>
+            <h2 id="deck-title">Keep what <em>pulls</em> you in.</h2>
+          </div>
+          <div class="deck-counter"><strong id="deck-current">01</strong><span>/</span><span id="deck-total">05</span></div>
+        </div>
+        <div class="progress-track" aria-label="Recommendation progress"><span id="progress-bar"></span></div>
+        <div class="deck-stage">
+          <div class="deck-shadow-card shadow-two" aria-hidden="true"></div>
+          <div class="deck-shadow-card shadow-one" aria-hidden="true"></div>
+          <article id="recommendation-card" class="recommendation-card" tabindex="0" aria-live="polite"></article>
+          <div id="swipe-stamp" class="swipe-stamp" aria-hidden="true"></div>
+        </div>
+        <div class="deck-controls">
+          <button id="skip-button" class="round-action skip-action" type="button" data-action="skip" aria-label="Skip this recommendation">
+            <span class="control-glyph" aria-hidden="true">←</span><span class="control-label">Skip</span>
+          </button>
+          <p class="keyboard-hint"><kbd>←</kbd><span>or</span><kbd>→</kbd><br /><small>keyboard ready</small></p>
+          <button id="save-button" class="round-action save-action" type="button" data-action="save" aria-label="Save this recommendation">
+            <span class="control-label">Save</span><span class="control-glyph" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="saved-view" class="view saved-view is-hidden" aria-labelledby="saved-title">
+        <div class="saved-heading">
+          <p class="eyebrow">02 / 02 · stack complete</p>
+          <h2 id="saved-title">Your saved<br /><em>side quests.</em></h2>
+          <p id="saved-summary" class="saved-summary"></p>
+        </div>
+        <div id="saved-list" class="saved-list"></div>
+        <div id="empty-saved" class="empty-saved is-hidden">
+          <span class="empty-mark" aria-hidden="true">—</span>
+          <h3>No saves this round.</h3>
+          <p>That is okay. A good skip is still a useful signal.</p>
+        </div>
+        <button class="secondary-button restart-button" type="button" data-action="reset"><span aria-hidden="true">↻</span> Start over with another song</button>
+      </section>
+
+      <footer class="app-footer">
+        <span>Built for curious ears.</span>
+        <span class="footer-index">VS / 001</span>
+      </footer>
+      <div id="live-region" class="sr-only" aria-live="polite"></div>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>

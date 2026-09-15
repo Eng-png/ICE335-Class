@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "VibeSwipe Song Recommender"
+description = "A self-contained song discovery proof of concept where listeners type a favorite song and swipe through similar recommendations based on genre, mood, energy, and tempo."
+version = "1.0.0"
+id = "artifacts/vibeswipe"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24497
+
+[services.development]
+run = "pnpm --filter @workspace/vibeswipe run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/vibeswipe", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/vibeswipe/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24497"
+BASE_PATH = "/"
