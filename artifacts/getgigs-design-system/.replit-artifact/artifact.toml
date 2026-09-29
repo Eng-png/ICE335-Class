@@ -1,0 +1,19 @@
+kind = "design-system"
+previewPath = "/getgigs-design-system/"
+title = "GetGigs Design System"
+description = "A reusable design system for GetGigs, a two-sided marketplace connecting independent artists with nearby venues through profiles, availability, genre fit, and local discovery."
+version = "1.0.0"
+id = "artifacts/getgigs-design-system"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/getgigs-design-system/" ]
+localPort = 20640
+
+[services.development]
+run = "pnpm --filter @workspace/getgigs-design-system run dev"
+
+[services.env]
+PORT = "20640"
+BASE_PATH = "/getgigs-design-system/"
